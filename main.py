@@ -1,8 +1,6 @@
 from flask import Flask, url_for, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 
-from models.models import Item
-
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
@@ -16,8 +14,7 @@ app = Flask(__name__)
 # Routes
 @app.route("/")
 def index():
-    return render_template('index.html')
-
+    return render_template('dashindex.html', item_type_list=[{"name": "Test"}])
 
 @app.route("/item", methods=['GET'])
 def item_list():
@@ -33,8 +30,6 @@ def item_save():
 @app.route("/item_type")
 def index():
     return render_template('index.html')
-
-
 
 
 if __name__ == '__main__':
