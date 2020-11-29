@@ -8,9 +8,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
 db = SQLAlchemy(app)
 
 
-app = Flask(__name__)
-
-
 # Routes
 @app.route("/")
 def index():
@@ -24,7 +21,7 @@ def item_list():
 
 @app.route("/item", methods=['POST'])
 def item_save():
-    new_item = Item(**request.form.__dict__)
+    new_item = db.Item(**request.form.__dict__)
 
 
 @app.route("/item_type")
