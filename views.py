@@ -6,7 +6,7 @@ from models import Item, ItemType
 
 @app.route("/test")
 def test():
-    item_type_list = [{"name": "Radio"}, {"name": "Baterias"}, {"name": "Chaves"}]
+    item_type_list = [{"item_name": "Radio"}, {"item_name": "Baterias"}, {"item_name": "Chaves"}]
     return render_template('dashindex.html', item_type_list=item_type_list)
 
 
