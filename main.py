@@ -22,7 +22,7 @@ def item_list():
 
 @app.route("/item", methods=['POST'])
 def item_save():
-    new_item = Item(**request.form.__dict__)
+    new_item = db.Item(**request.form.__dict__)
 
 
 @app.route("/item_type")
