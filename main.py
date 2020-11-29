@@ -1,16 +1,11 @@
 from flask import Flask, url_for, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 
-from models.models import Item
-
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
 
 db = SQLAlchemy(app)
-
-
-app = Flask(__name__)
 
 
 # Routes
