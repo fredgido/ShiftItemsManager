@@ -11,11 +11,12 @@ db = SQLAlchemy(app)
 # Routes
 @app.route("/test")
 def test():
-    return render_template('dashindex.html', item_type_list=[{"name": "Test"}])
+    item_type_list=[{"name": "Radio"},{"name": "Baterias"}, {"name": "Chaves"}]
+    return render_template('dashindex.html', item_type_list=item_type_list)
 
 @app.route("/")
 def index():
-    return render_template('dashindex.html', item_type_list=[{"name": "Test"}])
+    return render_template('index.html', item_type_list=[{"name": "Test"}])
 
 @app.route("/item", methods=['GET'])
 def item_list():
@@ -30,7 +31,7 @@ def item_save():
 
 @app.route("/item_type")
 def index():
-    return render_template('index.html')
+    return render_template('dashindex.html')
 
 
 if __name__ == '__main__':
