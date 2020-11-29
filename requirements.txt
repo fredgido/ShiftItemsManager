@@ -1,0 +1,6 @@
+Flask
+SQLAlchemy
+requests
+Flask_SQLAlchemy
+Pillow
+psycopg2-binary
