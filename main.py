@@ -9,6 +9,10 @@ db = SQLAlchemy(app)
 
 
 # Routes
+@app.route("/test")
+def test():
+    return render_template('dashindex.html', item_type_list=[{"name": "Test"}])
+
 @app.route("/")
 def index():
     return render_template('dashindex.html', item_type_list=[{"name": "Test"}])
