@@ -27,7 +27,7 @@ def index():
 def display(item_type):
     all_item_type = ItemType.query.all()
     item_type_selected = ItemType.query.filter_by(item_name=item_type).all()
-    if len(item_type_selected)> 0:
+    if len(item_type_selected) >  0:
         item_type_selected = item_type_selected[0]
     else:
         item_type_selected = ItemType.query.all()[0]
@@ -36,9 +36,25 @@ def display(item_type):
         'dashindex.html',
         item_type_list=all_item_type,
         item_type_selected=item_type_selected,
-        item_list=item_list
+        item_display_list=item_list
         )
 
+
+@app.route("/reservation/<item_type>")
+def reservation(item_type):
+    all_item_type = ItemType.query.all()
+    item_type_selected = ItemType.query.filter_by(item_name=item_type).all()
+    if len(item_type_selected)> 0:
+        item_type_selected = item_type_selected[0]
+    else:
+        item_type_selected = ItemType.query.all()[0]
+    item_list = Reservation.query.filter_by(item_type_id=item_type_selected.id).all()
+    return render_template(
+        'dashindex.html',
+        item_type_list=all_item_type,
+        item_type_selected=item_type_selected,
+        item_display_list=item_list
+        )
 
 
 @app.route("/item", methods=['GET'])
