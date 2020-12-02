@@ -29,5 +29,13 @@ class Reservation(db.Model):
     date_updated = db.Column(db.DateTime, onupdate=datetime.utcnow)
 
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_name = db.Column(db.String(20), nullable=False)
+    user_phone_nr = db.Column(db.String(20), nullable=False)
+    user_email = db.Column(db.String(50), nullable=False)
+
+
+
 if __name__ == '__main__':
     db.create_all()
