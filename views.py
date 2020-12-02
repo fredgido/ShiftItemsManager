@@ -1,7 +1,7 @@
 from flask import render_template, jsonify, request
 
 from main import app, db
-from models import Item, ItemType
+from models import Item, ItemType, Reservation
 from utils import serialize
 
 
@@ -31,8 +31,8 @@ def display(item_type):
         item_type_list=all_item_type,
         item_type_selected=item_type_selected,
         item_display_list=item_list,
-        disp=display
-        )
+        disp=display,
+    )
 
 
 @app.route("/reservation/<item_type>")
@@ -43,13 +43,12 @@ def reservation(item_type):
         item_type_selected = item_type_selected[0]
     else:
         item_type_selected = ItemType.query.all()[0]
-    item_list = Reservation.query.filter_by(item_type_id=item_type_selected.id).all()
+    reservation_list = Reservation.query.join(Item).filter_by(item_type_id=item_type_selected.id).all()
     return render_template(
         'dashindex.html',
         item_type_list=all_item_type,
         item_type_selected=item_type_selected,
-        item_display_list=item_list,
-        reserve=reservation
+        reservation_list=reservation_list,
         )
 
 
