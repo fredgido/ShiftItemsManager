@@ -11,12 +11,6 @@ def test():
     return render_template('dashindex.html', item_type_list=all_item_type)
 
 
-@app.route("/t")
-def t():
-    all_item_type = [{"item_name": "Radio"}, {"item_name": "Baterias"}, {"item_name": "Chaves"}]
-    return render_template('BaseTemplate.html', item_type_list=all_item_type)
-
-
 @app.route("/")
 def index():
     all_item_type = ItemType.query.all()
@@ -36,7 +30,8 @@ def display(item_type):
         'dashindex.html',
         item_type_list=all_item_type,
         item_type_selected=item_type_selected,
-        item_display_list=item_list
+        item_display_list=item_list,
+        disp=display
         )
 
 
@@ -53,7 +48,8 @@ def reservation(item_type):
         'dashindex.html',
         item_type_list=all_item_type,
         item_type_selected=item_type_selected,
-        item_display_list=item_list
+        item_display_list=item_list,
+        reserve=reservation
         )
 
 
