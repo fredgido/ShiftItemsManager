@@ -100,7 +100,7 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
 
 
-            <h2>{{ item_type_selected.item_name if item_type_selected != None }}</h2>
+            <h2>{{ item_type_selected.item_name if item_type_selected is defined }}</h2>
             <div class="table-responsive">
                 <table class="table table-striped table-sm">
                     <thead>
