@@ -1,6 +1,9 @@
+import hashlib
+
 from flask import render_template, jsonify, request, session, url_for, redirect, g
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+
 from main import app, db
 from models import Item, ItemType, Reservation, User
 from utils import serialize
