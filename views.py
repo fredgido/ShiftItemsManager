@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, request
+from flask import render_template, jsonify, request, session, url_for, redirect, g
 
 from main import app, db
 from models import Item, ItemType, Reservation
@@ -10,11 +10,45 @@ def test():
     all_item_type = [{"item_name": "Radio"}, {"item_name": "Baterias"}, {"item_name": "Chaves"}]
     return render_template('dashindex.html', item_type_list=all_item_type)
 
+# Login test with dummy data
+users = {}
+users["Rui"] = {id: 1, 'username': 'Rui', 'password': 'teste', 'permission': 'superuser'}
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session.pop('user_id', None)
+        username = request.form['sp_uname']
+        password = request.form['sp_pass']
+
+        if users.get(username).get(password) == password:
+            session['username'] = username
+            session['password'] = password
+            return redirect(url_for("index"))
+        else:
+            redirect(url_for("index"))
+        
+    return "Login Page"
+
+# End Login
+
+@app.before_request
+def before_request():
+    username = session.get('username')
+    password = session.get('password')
+
+    if users.get(username) and users.get(username).get(password) == password:
+        g.user = users.get(username)
+    else:
+        g.user = {}
 
 @app.route("/")
 def index():
     all_item_type = ItemType.query.all()
-    return render_template('dashindex.html', item_type_list=all_item_type)
+
+    print(g.user)
+
+    return render_template('dashindex.html', item_type_list=all_item_type, user=g.user)
 
 
 @app.route("/display/<item_type>")
