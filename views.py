@@ -59,13 +59,10 @@ def before_request():
     else:
         g.user = {}
 
+
 @app.route("/")
 def index():
-    all_item_type = ItemType.query.all()
-    item_type_selected = ItemType.query.all()[0]
-    print(g.user)
-
-    return render_template('dashindex.html', item_type_list=all_item_type, user=g.user,item_type_selected=item_type_selected)
+    return redirect(url_for("display", item_type=ItemType.query.all()[0].item_name))
 
 
 @app.route("/display/<item_type>")
@@ -86,11 +83,16 @@ def display(item_type):
     )
 
 
+@app.route("/reservation/")
+def reservation_index():
+    return redirect(url_for("reservation", item_type=ItemType.query.all()[0].item_name))
+
+
 @app.route("/reservation/<item_type>")
 def reservation(item_type):
     all_item_type = ItemType.query.all()
     item_type_selected = ItemType.query.filter_by(item_name=item_type).all()
-    if len(item_type_selected)> 0:
+    if len(item_type_selected) > 0:
         item_type_selected = item_type_selected[0]
     else:
         item_type_selected = ItemType.query.all()[0]
