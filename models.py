@@ -31,9 +31,11 @@ class Reservation(db.Model):
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(20), nullable=False)
-    user_phone_nr = db.Column(db.String(20), nullable=False)
-    user_email = db.Column(db.String(50), nullable=False)
+    username = db.Column(db.String(20), nullable=False)
+    phone_nr = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(50), nullable=False)
+    perms = db.Column(db.String(50), nullable=False)
 
 
 

@@ -21,7 +21,7 @@ def login():
         username = request.form.get('sp_uname')
         password = request.form.get('sp_pass')
 
-        if users.get(username).get(password) == password:
+        if users.get(username) and users.get(username).get('password') == password:
             session['username'] = username
             session['password'] = password
             return redirect(url_for("index"))
