@@ -7,6 +7,7 @@ from utils import serialize
 import hashlib
 
 
+
 @app.route("/test")
 def test():
     all_item_type = [{"item_name": "Radio"}, {"item_name": "Baterias"}, {"item_name": "Chaves"}]
@@ -42,7 +43,10 @@ def before_request():
     username = session.get('username')
     password = session.get('password')
 
-    if users.get(username) and users.get(username).get(password) == password:
+    hashpw = hashlib.sha256()
+    hashpw.update(password.encode())
+
+    if users.get(username) and users.get(username).get(password) == hashpw.hexdigest():
         g.user = users.get(username)
     else:
         g.user = {}
