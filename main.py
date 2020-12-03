@@ -2,6 +2,7 @@ from flask import Flask, url_for, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.secret_key = "SECRET_TESTING"
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
 
