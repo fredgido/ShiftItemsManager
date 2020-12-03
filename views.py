@@ -18,15 +18,15 @@ users["Rui"] = {id: 1, 'username': 'Rui', 'password': 'teste', 'permission': 'su
 def login():
     if request.method == 'POST':
         session.pop('user_id', None)
-        username = request.form['sp_uname']
-        password = request.form['sp_pass']
+        username = request.form.get('sp_uname')
+        password = request.form.get('sp_pass')
 
         if users.get(username).get(password) == password:
             session['username'] = username
             session['password'] = password
             return redirect(url_for("index"))
         else:
-            redirect(url_for("index"))
+            return "Fail"
         
     return "Login Page"
 
