@@ -51,11 +51,14 @@ def before_request():
     username = session.get('username')
     password = session.get('password')
 
-    hashpw = hashlib.sha256()
-    hashpw.update(password.encode())
+    if password:
+        hashpw = hashlib.sha256()
+        hashpw.update(password.encode())
 
-    if users.get(username) and users.get(username).get(password) == hashpw.hexdigest():
-        g.user = users.get(username)
+        if users.get(username) and users.get(username).get(password) == hashpw.hexdigest():
+            g.user = users.get(username)
+        else:
+            g.user = {}
     else:
         g.user = {}
 
