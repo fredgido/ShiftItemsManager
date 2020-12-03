@@ -1,10 +1,15 @@
 from flask import render_template, jsonify, request, session, url_for, redirect, g
-
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 from main import app, db
-from models import Item, ItemType, Reservation
+from models import Item, ItemType, Reservation, User
 from utils import serialize
 
-import hashlib
+admin = Admin(app, name='microblog', template_mode='bootstrap3')
+admin.add_view(ModelView(Item, db.session))
+admin.add_view(ModelView(ItemType, db.session))
+admin.add_view(ModelView(Reservation, db.session))
+admin.add_view(ModelView(User, db.session))
 
 
 
@@ -54,10 +59,10 @@ def before_request():
 @app.route("/")
 def index():
     all_item_type = ItemType.query.all()
-
+    item_type_selected = ItemType.query.all()[0]
     print(g.user)
 
-    return render_template('dashindex.html', item_type_list=all_item_type, user=g.user)
+    return render_template('dashindex.html', item_type_list=all_item_type, user=g.user,item_type_selected=item_type_selected)
 
 
 @app.route("/display/<item_type>")
