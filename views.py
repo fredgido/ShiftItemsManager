@@ -4,6 +4,8 @@ from main import app, db
 from models import Item, ItemType, Reservation
 from utils import serialize
 
+import hashlib
+
 
 @app.route("/test")
 def test():
@@ -12,7 +14,7 @@ def test():
 
 # Login test with dummy data
 users = {}
-users["Rui"] = {id: 1, 'username': 'Rui', 'password': 'teste', 'permission': 'superuser'}
+users["Rui"] = {id: 1, 'username': 'Rui', 'password': '46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5', 'permission': 'superuser'}
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -21,7 +23,10 @@ def login():
         username = request.form.get('sp_uname')
         password = request.form.get('sp_pass')
 
-        if users.get(username) and users.get(username).get('password') == password:
+        hashpw = hashlib.sha256()
+        hashpw.update(password.encode())
+
+        if users.get(username) and users.get(username).get('password') == hashpw.hexdigest():
             session['username'] = username
             session['password'] = password
             return redirect(url_for("index"))
