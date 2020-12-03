@@ -37,7 +37,7 @@ def login():
 
         if users.get(username) and users.get(username).get('password') == hashpw.hexdigest():
             session['username'] = username
-            session['password'] = password
+            session['password'] = hashpw.hexdigest()
             return redirect(url_for("index"))
         else:
             return "Fail"
@@ -52,10 +52,7 @@ def before_request():
     password = session.get('password')
 
     if password:
-        hashpw = hashlib.sha256()
-        hashpw.update(password.encode())
-
-        if users.get(username) and users.get(username).get(password) == hashpw.hexdigest():
+        if users.get(username) and users.get(username).get('password') == password:
             g.user = users.get(username)
         else:
             g.user = {}
