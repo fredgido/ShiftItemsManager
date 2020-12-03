@@ -65,6 +65,10 @@ def index():
     return redirect(url_for("display", item_type=ItemType.query.all()[0].item_name))
 
 
+@app.route("/display/")
+def display_index():
+    return redirect(url_for("display", item_type=ItemType.query.all()[0].item_name))
+
 @app.route("/display/<item_type>")
 def display(item_type):
     all_item_type = ItemType.query.all()
