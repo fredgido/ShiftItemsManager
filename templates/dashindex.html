@@ -209,6 +209,15 @@
                         <td>{{reservation.state}}</td>
                         <td>{{reservation.date_start}}</td>
                         <td>{{reservation.date_end}}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"></button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="#">Edit</a>
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %} {% endif %}
                     </tbody>
