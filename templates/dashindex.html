@@ -51,9 +51,11 @@
 
 </head>
 <body>
+<!-- Navigation Bar -->
 <nav
         class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow"
 >
+<!-- Title -->
     <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#"
     >Items Manager</a
     >
@@ -69,6 +71,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- User LogIn -->
     <div style="padding: 15px 15px 10px">
         <form action="/login" method="POST">
             <input type="text" name="sp_uname" placeholder="Username"/>
@@ -77,13 +80,15 @@
         </form>
     </div>
 </nav>
-
+<!-- End Navigation Bar-->
+<!-- Sidebar -->
 <div class="container-fluid">
     <div class="row">
         <nav
                 id="sidebarMenu"
                 class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
         >
+            <!-- Sidebar Buttons -->
             <div class="sidebar-sticky pt-3">
                 <ul class="nav flex-column">
                     <div
@@ -91,6 +96,7 @@
                             role="group"
                             aria-label="Button group"
                     >
+                        <!-- Display & Reservaion, Active and Not Active Buttons -->
                         <div class="row">
                             {% if item_display_list %}
                             <li class="display col-md-5">
@@ -135,6 +141,7 @@
                             {% endif %}
                         </div>
                     </div>
+                    <!-- Creation of New Item Buttons -->
                     {% for item_type in item_type_list -%}
                     <li class="nav-item">
                         <a
@@ -152,6 +159,7 @@
                         </a>
                     </li>
                     {%- endfor %}
+                    <!-- Self Reservations Button -->
                     <div>
                         <li>
                             <a class="btn" href="#" role="button" style="float: bottom">
@@ -163,12 +171,15 @@
                 </ul>
             </div>
         </nav>
-
+        <!-- End Sidebar -->
+        <!-- Website Content -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <!-- Item Information Tables -->
             <h2>{{ item_type_list.item_name if item_type_list is defined }}</h2>
             <div class="table-responsive">
                 <table class="table table-striped table-sm">
                     <thead>
+                    <!-- Table Header -->
                     <tr>
                         {% if item_display_list %}
                         <th>Serial code</th>
@@ -186,6 +197,7 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <!-- Table Content for Display Tab -->
                     {% if item_display_list %} {% for item in item_display_list %}
                     <tr>
                         <td>{{item.serial_nr}}</td>
@@ -202,6 +214,7 @@
                             </div>
                         </td>
                     </tr>
+                    <!-- Table Content for Reservation Tab -->
                     {% endfor %} {% endif %} {% if reservation_list %} {% for
                     reservation in reservation_list %}
                     <tr>
@@ -224,9 +237,11 @@
                 </table>
             </div>
         </main>
+        <!-- End Website Content -->
     </div>
 </div>
 
+<!-- Source Scripts -->
 <script
         src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
