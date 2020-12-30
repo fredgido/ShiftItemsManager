@@ -44,7 +44,7 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="static/dashboard.css" rel="stylesheet"/>
+    <link href="{{ url_for('static', filename='dashboard.css') }}" rel="stylesheet"/>
 
     <!-- Icons source -->
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
@@ -77,12 +77,17 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-        <form action="{{ url_for('login') }}" method="POST">
-            {{ form.csrf_token }}
-            {{ form.sp_uname(placeholder="Username") }}
-            {{ form.sp_pass(placeholder="Password") }}
-            <button class="btn btn-primary" type="submit">Login</button>
-        </form>
+        {% if current_user.is_authenticated %}
+            <h2 id="user-greeting">Bem-vindo {{ current_user.username }}</h2>
+            <a id="logoutBtn" class="btn btn-outline-light" role="button" href="{{ url_for('logout') }}">Sair</a>
+        {% else %}
+            <form action="{{ url_for('login') }}" method="POST">
+                {{ form.csrf_token }}
+                {{ form.sp_uname(placeholder="Username") }}
+                {{ form.sp_pass(placeholder="Password") }}
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
+        {% endif %}
     </div>
 </nav>
 

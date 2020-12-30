@@ -4,7 +4,7 @@ from flask import render_template, jsonify, request, session, url_for, redirect,
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.helpers import is_safe_url
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, login_required, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired
@@ -84,6 +84,12 @@ def login():
     return "Login Page"
 
 # End Login
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("index"))
 
 
 @app.before_request
