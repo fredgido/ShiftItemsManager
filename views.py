@@ -1,10 +1,15 @@
 import hashlib
 
-from flask import render_template, jsonify, request, session, url_for, redirect, g
+from flask import render_template, jsonify, request, session, url_for, redirect, g, flash, abort
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.helpers import is_safe_url
+from flask_login import login_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired
 
-from main import app, db
+from main import app, db, login_manager
 from models import Item, ItemType, Reservation, User
 from utils import serialize
 
@@ -15,36 +20,71 @@ admin.add_view(ModelView(Reservation, db.session))
 admin.add_view(ModelView(User, db.session))
 
 
-
 @app.route("/test")
 def test():
     all_item_type = [{"item_name": "Radio"}, {"item_name": "Baterias"}, {"item_name": "Chaves"}]
     return render_template('dashindex.html', item_type_list=all_item_type)
 
+
 # Login test with dummy data
-users = {}
-users["Rui"] = {id: 1, 'username': 'Rui', 'password': '46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5', 'permission': 'superuser'}
+users = {
+    "Rui": {id: 1, 'username': 'Rui', 'password': '46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5',
+            'permission': 'superuser'}
+}
+
+
+# Form model - Flask-WTF
+class LoginForm(FlaskForm):
+    sp_uname = StringField('Username', validators=[DataRequired()])
+    sp_pass = PasswordField('Password', validators=[DataRequired()])
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        session.pop('user_id', None)
+    form = LoginForm()
+
+    # Se o utilizador já se encontrar autenticado
+    if current_user.is_authenticated:
+        redirect(url_for('index'))
+
+    # Verifica se o formulário foi submetido através de POST
+    if form.validate_on_submit():
+        # session.pop('user_id', None)
+
         username = request.form.get('sp_uname')
         password = request.form.get('sp_pass')
 
-        hashpw = hashlib.sha256()
-        hashpw.update(password.encode())
+        # Verificar se o nome de utilizador se encontra registado na nossa BD
+        user = User.query.filter_by(username=username).first()
 
-        if users.get(username) and users.get(username).get('password') == hashpw.hexdigest():
-            session['username'] = username
-            session['password'] = hashpw.hexdigest()
-            return redirect(url_for("index"))
-        else:
-            return "Fail"
-        
+        # Cifrar password para comparar com a password cifrada na nossa DB
+        # hashpw = hashlib.sha256()
+        # hashpw.update(password.encode())
+
+        if user and user.check_password(password):
+            login_user(user)
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for('index'))
+        flash('Credenciais incorretas. Por favor tente novamente.')
+        return redirect(url_for('index'))
+
+        # if users.get(username) and users.get(username).get('password') == hashpw.hexdigest():
+        #    session['username'] = username
+        #    session['password'] = hashpw.hexdigest()
+        #    return redirect(url_for("index", login="Logged in"))
+        # else:
+        #    flash("Username ou password incorreto. Por favor tente outra vez.", "error")
+        #    return redirect(url_for("index"))
+
     return "Login Page"
 
 # End Login
+
 
 @app.before_request
 def before_request():
@@ -69,11 +109,14 @@ def index():
 def display_index():
     return redirect(url_for("display", item_type=ItemType.query.all()[0].item_name))
 
+
 @app.route("/display/<item_type>")
 def display(item_type):
+    loginForm = LoginForm()
+
     all_item_type = ItemType.query.all()
     item_type_selected = ItemType.query.filter_by(item_name=item_type).all()
-    if len(item_type_selected) >  0:
+    if len(item_type_selected) > 0:
         item_type_selected = item_type_selected[0]
     else:
         item_type_selected = ItemType.query.all()[0]
@@ -84,6 +127,7 @@ def display(item_type):
         item_type_selected=item_type_selected,
         item_display_list=item_list,
         disp=display,
+        form=loginForm,
     )
 
 

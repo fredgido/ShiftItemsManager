@@ -1,8 +1,12 @@
-from flask import Flask, url_for, render_template, jsonify, request
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 
 app = Flask(__name__)
 app.secret_key = "SECRET_TESTING"
+
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.db'
 

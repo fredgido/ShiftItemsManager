@@ -1,3 +1,6 @@
+from flask_login import UserMixin
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from main import db
 from datetime import datetime
 
@@ -29,7 +32,7 @@ class Reservation(db.Model):
     date_updated = db.Column(db.DateTime, onupdate=datetime.utcnow)
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
     phone_nr = db.Column(db.String(20), nullable=False)
@@ -37,6 +40,21 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     perms = db.Column(db.String(50), nullable=False)
 
+    def __init__(self, username, phone_nr, email, password, perms):
+        self.username = username
+        self.phone_nr = phone_nr
+        self.email = email
+        self.password = password
+        self.perms = perms
+
+    def set_password(self, password):
+        self.password = generate_password_hash(
+            password,
+            method='sha256'
+        )
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
 
 if __name__ == '__main__':
