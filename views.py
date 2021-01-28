@@ -47,7 +47,7 @@ def load_user(user_id):
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    user = User()
+    user = None #User()
 
     # Se o utilizador já se encontrar autenticado
     if current_user.is_authenticated:
@@ -67,8 +67,8 @@ def login():
         # hashpw = hashlib.sha256()
         # hashpw.update(password.encode())
 
-        if check_user and user.check_password(password):
-            login_user(user)
+        if check_user and check_user.check_password(password):
+            login_user(check_user)
             next_page = request.args.get('next')
             return redirect(next_page or url_for('index'))
         flash('Credenciais incorretas. Por favor tente novamente.')
