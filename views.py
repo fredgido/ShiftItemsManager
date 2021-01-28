@@ -18,7 +18,8 @@ admin = Admin(app, name='microblog', template_mode='bootstrap3')
 
 class UserModelAdmin(ModelView):
     def on_model_change(self, form, instance,x,y=None):
-        instance.set_password(instance.password)
+        if "sha" not in instance.password:
+            instance.set_password(instance.password)
 
 
 admin.add_view(ModelView(Item, db.session))
