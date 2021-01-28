@@ -14,10 +14,17 @@ from models import Item, ItemType, Reservation, User
 from utils import serialize
 
 admin = Admin(app, name='microblog', template_mode='bootstrap3')
+
+
+class UserModelAdmin(ModelView):
+    def on_model_change(self, form, instance,x,y=None):
+        instance.set_password(instance.password)
+
+
 admin.add_view(ModelView(Item, db.session))
 admin.add_view(ModelView(ItemType, db.session))
 admin.add_view(ModelView(Reservation, db.session))
-admin.add_view(ModelView(User, db.session))
+admin.add_view(UserModelAdmin(User, db.session))
 
 
 @app.route("/test")
