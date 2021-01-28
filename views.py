@@ -166,6 +166,19 @@ def reservation(item_type):
                            reservation_list=reservation_list, login=login_form)
 
 
+@app.route("/reservation/personal")
+def personal_reservation():
+    login_form = LoginForm()
+    all_item_type = ItemType.query.all()
+    item_type_selected = ItemType.query.all()
+    if len(item_type_selected) > 0:
+        item_type_selected = item_type_selected[0]
+    else:
+        item_type_selected = ItemType.query.all()[0]
+    reservation_list = Reservation.query.filter_by(user_id=current_user.id).join(Item).filter_by(item_type_id=item_type_selected.id).all()
+    return render_template('dashindex.html', item_type_list=all_item_type, item_type_selected=item_type_selected,
+                           reservation_list=reservation_list, login=login_form)
+
 @app.route("/item", methods=['GET'])
 def item_list():
     objs = serialize(Item.query.all())

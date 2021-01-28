@@ -19,6 +19,7 @@ class Item(db.Model):
     date_inserted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     date_updated = db.Column(db.DateTime, onupdate=datetime.utcnow)
     item_type_id = db.Column(db.Integer, db.ForeignKey('item_type.id'), nullable=False)
+    reservations = db.relationship('Reservation', backref='item', lazy=True)
 
 
 class Reservation(db.Model):
