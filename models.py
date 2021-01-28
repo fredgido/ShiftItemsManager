@@ -17,7 +17,7 @@ class Item(db.Model):
     serial_nr = db.Column(db.Integer, unique=True, nullable=False)
     state = db.Column(db.String(50), nullable=False)
     date_inserted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    date_updated = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, onupdate=datetime.utcnow, default=datetime.utcnow)
     item_type_id = db.Column(db.Integer, db.ForeignKey('item_type.id'), nullable=False)
     reservations = db.relationship('Reservation', backref='item', lazy=True)
 
@@ -30,7 +30,7 @@ class Reservation(db.Model):
     date_start = db.Column(db.DateTime, nullable=False)
     date_end = db.Column(db.DateTime, nullable=False)
     date_inserted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    date_updated = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    date_updated = db.Column(db.DateTime, onupdate=datetime.utcnow, default=datetime.utcnow)
 
 
 class User(UserMixin, db.Model):

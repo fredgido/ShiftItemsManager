@@ -80,7 +80,7 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page or url_for('index'))
         flash('Credenciais incorretas. Por favor tente novamente.')
-        return redirect(url_for('index'))
+        return redirect(url_for('dashindex.html'))
 
         # if users.get(username) and users.get(username).get('password') == hashpw.hexdigest():
         #    session['username'] = username
