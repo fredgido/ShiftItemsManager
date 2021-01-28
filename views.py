@@ -47,6 +47,7 @@ def load_user(user_id):
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    user = User()
 
     # Se o utilizador já se encontrar autenticado
     if current_user.is_authenticated:
@@ -60,13 +61,13 @@ def login():
         password = request.form.get('sp_pass')
 
         # Verificar se o nome de utilizador se encontra registado na nossa BD
-        user = User.query.filter_by(username=username).first()
+        check_user = User.query.filter_by(username=username).first()
 
         # Cifrar password para comparar com a password cifrada na nossa DB
         # hashpw = hashlib.sha256()
         # hashpw.update(password.encode())
 
-        if user and user.check_password(password):
+        if check_user and user.check_password(password):
             login_user(user)
             next_page = request.args.get('next')
             return redirect(next_page or url_for('index'))
@@ -82,6 +83,7 @@ def login():
         #    return redirect(url_for("index"))
 
     return "Login Page"
+
 
 # End Login
 
@@ -144,6 +146,7 @@ def reservation_index():
 
 @app.route("/reservation/<item_type>")
 def reservation(item_type):
+    login_form = LoginForm()
     all_item_type = ItemType.query.all()
     item_type_selected = ItemType.query.filter_by(item_name=item_type).all()
     if len(item_type_selected) > 0:
@@ -151,12 +154,8 @@ def reservation(item_type):
     else:
         item_type_selected = ItemType.query.all()[0]
     reservation_list = Reservation.query.join(Item).filter_by(item_type_id=item_type_selected.id).all()
-    return render_template(
-        'dashindex.html',
-        item_type_list=all_item_type,
-        item_type_selected=item_type_selected,
-        reservation_list=reservation_list,
-        )
+    return render_template('dashindex.html', item_type_list=all_item_type, item_type_selected=item_type_selected,
+                           reservation_list=reservation_list, login=login_form)
 
 
 @app.route("/item", methods=['GET'])
