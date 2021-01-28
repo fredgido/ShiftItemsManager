@@ -45,3 +45,11 @@ Para criar um servidor e lançar a aplicação é necessário os seguintes requi
     - Software
         - Sistema Operativo: Linux
         - Linguagem: Python 3.7 ou superior
+        
+#Discentes
+    
+    - Fred Fernandes    nº21901541
+    - Ivan Carlos       nº21801713
+    - Nelson Moreira    nº21901240
+    - Rui Filipe        nº21504498
+    - Silas Torres      nº22003394        
